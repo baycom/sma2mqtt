@@ -216,16 +216,17 @@ const PayloadParser_30769 = new Parser()
 const getRegisters = async (address) => {
 	try {
 		modbusClient.setID(address);
-		console.log("read...");
 		let vals = await modbusClient.readHoldingRegisters(30513, 8);
 		var state_30513 = PayloadParser_30513.parse(vals.buffer);
 		vals = await modbusClient.readHoldingRegisters(30769, 74);
 		var state_30769 = PayloadParser_30769.parse(vals.buffer);
 		vals = await modbusClient.readHoldingRegisters(30953, 10);
 		var state_30953 = PayloadParser_30953.parse(vals.buffer);
-		var fullState = {};
-		Object.assign(fullState, state_30953, state_30769, state_30953);
-//		await sendMqtt(SerialNumber[address], fullState);
+		if(state_30769.PV1Power != 0x80000000) {
+			var fullState = {};
+			Object.assign(fullState, state_30953, state_30769, state_30953);
+			await sendMqtt(SerialNumber[address], fullState);
+		}
 
 		if (options.debug) {
 			console.log(util.inspect(fullState));
