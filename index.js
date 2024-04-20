@@ -168,8 +168,8 @@ async function getSN(address) {
 }
 
 const PayloadParser_30513 = new Parser()
-	.uint64be('TotalPVGeneration', { formatter: (x) => { return Number(x)}})
-	.uint64be('TodayPVGeneration', { formatter: (x) => { return Number(x)}})
+	.uint64be('TotalPVGeneration', { formatter: (x) => { return Number(x)/1000.0}})
+	.uint64be('TodayPVGeneration', { formatter: (x) => { return Number(x)/1000.0}})
 	;
 
 const PayloadParser_30769 = new Parser()
@@ -224,7 +224,7 @@ const getRegisters = async (address) => {
 		var state_30953 = PayloadParser_30953.parse(vals.buffer);
 		if(state_30769.PV1Power != 0x80000000) {
 			var fullState = {};
-			Object.assign(fullState, state_30953, state_30769, state_30953);
+			Object.assign(fullState, state_30513, state_30769, state_30953);
 			await sendMqtt(SerialNumber[address], fullState);
 		}
 
