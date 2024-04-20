@@ -218,9 +218,9 @@ const getRegisters = async (address) => {
 		modbusClient.setID(address);
 		let vals = await modbusClient.readHoldingRegisters(30513, 8);
 		var state_30513 = PayloadParser_30513.parse(vals.buffer);
-		vals = await modbusClient.readHoldingRegisters(30769, 74);
+		vals = await modbusClient.readHoldingRegisters(30769, 76);
 		var state_30769 = PayloadParser_30769.parse(vals.buffer);
-		vals = await modbusClient.readHoldingRegisters(30953, 10);
+		vals = await modbusClient.readHoldingRegisters(30953, 12);
 		var state_30953 = PayloadParser_30953.parse(vals.buffer);
 		if(state_30769.PV1Power != 0x80000000) {
 			var fullState = {};
